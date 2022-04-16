@@ -8,16 +8,16 @@ Created on Fri Apr 15 14:30:12 2022
 import tensorflow as tf
 from tensorflow.compat.v1.keras.preprocessing.text import Tokenizer
 from tensorflow.compat.v1.keras.preprocessing.sequence import pad_sequences
-from flask import Flask,request,render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
-model = tf.keras.models.load_model("/Final_model.h5")
+model = tf.keras.models.load_model("Final_model.h5")
 
 @app.route("/")
 def home():
     return render_template("index.html")
 
-@app.route("/predict",methods = ["POST"])
+@app.route("/predict",methods = ["POST", "GET"])
 def predict():
     tweet = request.form["tweet"]
     processed_tweet = preprocess(tweet)
@@ -25,8 +25,6 @@ def predict():
     
     return render_template("index.html",pred_text = "The tweet is {}".format(model_list.mean()))
     
-
-
 
 def preprocess(tweet):
     tokenizer_test = Tokenizer()
@@ -39,4 +37,4 @@ def preprocess(tweet):
     return samples_tokens_pad
 
 if __name__=='__main__':
-    app.run()
+    app.run(debug = True)
