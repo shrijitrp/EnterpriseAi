@@ -11,12 +11,12 @@ from tensorflow.compat.v1.keras.preprocessing.sequence import pad_sequences
 import re
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
-from flask import request,render_template
+from flask import request,render_template, Flask
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import one_hot
 
-app = flask.Flask(__name__)
-model = tf.keras.models.load_model("/Final_model_v2.h5")
+app = Flask(__name__)
+model = tf.keras.models.load_model("Final_model_v2.h5")
 
 vocab_size = 238052
 ps = PorterStemmer()
@@ -28,12 +28,16 @@ embedding_dim= 100
 def home():
     return render_template("index.html")
 
-@app.route("/predict",methods = ["POST"])
+@app.route("/predict",methods = ["POST", "GET"])
 def predict():
     tweet = request.form["tweet"]
     processed_tweet = preprocess(tweet)
     output = model.predict(processed_tweet)
-    return render_template("index.html",pred_text = "The tweet is {}".format("True" if (output>0.5) else "False"))
+    if output > 0.5:
+        output_Bool = "True"
+    else:
+        output_Bool = "Fake"
+    return render_template("index.html", prediction_text = "The tweet is {}".format(output_Bool))
     
 
 def preprocess(tweet):
@@ -52,4 +56,4 @@ def preprocess(tweet):
 
 
 if __name__=='__main__':
-    app.run()
+    app.run(debug = True)

@@ -17,8 +17,8 @@
 	<h1>Predict Fake Tweets</h1>
 
      <!-- Main Input For Receiving Query to our ML -->
-    <form action="{{ url_for('predict')}}"method="post">
-    	<input type="text" name="Tweet" placeholder="Tweet" required="required" />
+    <form action="{{ url_for('predict')}}" method="post">
+    	<input type="text" name="tweet" placeholder="Tweet" required="required" />
        
         <button type="submit" class="btn btn-primary btn-block btn-large">Predict</button>
     </form>
