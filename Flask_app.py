@@ -14,11 +14,9 @@ from nltk.stem.porter import PorterStemmer
 from flask import request,render_template
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import one_hot
-import pickle
 
 app = flask.Flask(__name__)
-pickle_in = open("Final_model.pkl","rb")
-model=pickle.load(pickle_in)
+model = tf.keras.models.load_model("/Final_model_v2.h5")
 
 vocab_size = 238052
 ps = PorterStemmer()
